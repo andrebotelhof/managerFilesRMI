@@ -42,7 +42,7 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 
 	@Override
 	public int mkdir(String path) throws RemoteException {
-		File arquivo = new File(path);
+		File arquivo = new File("arquivos\\" + path);
 		if (!arquivo.exists()) {
 			if (arquivo.mkdir()) {
 				System.out.println("Directory is created!");
