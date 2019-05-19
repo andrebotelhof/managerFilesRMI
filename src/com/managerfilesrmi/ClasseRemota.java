@@ -1,6 +1,9 @@
 package com.managerfilesrmi;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -57,28 +60,61 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 
 	@Override
 	public int create(String path) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		File file = new File("arquivos\\" + path);
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+				System.out.println("New file created!");
+				return 0;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return 1;
 	}
 
 	@Override
 	public int unlink(String path) throws RemoteException {
-		// TODO Auto-generated method stub
+		File file = new File("arquivos\\" + path);
+		if (file.exists()) {
+			file.delete();
+			System.out.println("File/Directory was deleted!");
+		}  else {
+			System.out.println("Failed to delete file/directory!");
+		}
+
 		return 0;
 	}
 
 	@Override
 	public int write(byte[] data, String path) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		if (data != null && path != null) {
+			try {
+				Files.write(Paths.get("arquivos\\" + path), data);
+				System.out.println("File was updated!");
+				return 0;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} else {
+			System.out.println("Failed to update file!");
+		}
+		return 1;
 	}
 
 	@Override
 	public byte[] read(String path) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		String content;
+		try {
+			content = new String(Files.readAllBytes(Paths.get("arquivos\\" + path)));
+			return content.getBytes();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
-	
-
 }
