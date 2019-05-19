@@ -1,3 +1,3 @@
 # managerFilesRMI
 
-vamo daee gurizadinhaa
+vamo dalee gurizadinhaa
