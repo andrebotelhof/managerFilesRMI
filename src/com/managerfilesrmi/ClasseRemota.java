@@ -108,8 +108,7 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 	public byte[] read(String path) throws RemoteException {
 		String content;
 		try {
-			content = new String(Files.readAllBytes(Paths.get("arquivos\\" + path)));
-			return content.getBytes();
+			return Files.readAllBytes(Paths.get("arquivos\\" + path));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -58,10 +58,15 @@ public class Cliente {
 	                    case 6:
 	                        System.out.println("Digite o caminho do arquivo que deve ser lido");
 	                        String lerArquivo = scanner.next();
-	                        System.out.println(fsinterface.read(lerArquivo));
+	                        String textoLido = new String(fsinterface.read(lerArquivo));
+	                        System.out.println(textoLido);
 	                        break;
-	                    case 0:
+	                    case 9:
+	                    	System.out.println("Encerrando o sistema...");
 	                        System.exit(0);
+	                        break;
+	                    default:
+	                    	System.out.println("Digite uma opção válida!");
 	                }
 	            }
 			} catch (Exception e) {
