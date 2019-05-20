@@ -8,16 +8,16 @@ public class Servidor {
 	public Servidor() {
 		try {
 			LocateRegistry.createRegistry(1099);
-			System.out.println("Iniciando o servidor");
+			System.out.println("Iniciando o servidor...");
 		} catch (RemoteException e) {
 			System.out.println("Servidor já existe");
 		}
 
 		try {
 			Naming.rebind("Servidor", new ClasseRemota());
-			System.out.println("Servidor on");
+			System.out.println("Servidor onine!");
 		} catch (Exception e) {
-			System.out.println("Deu pau no server");
+			System.out.println("Deu pau no server :/");
 			e.printStackTrace();
 		}
 	}

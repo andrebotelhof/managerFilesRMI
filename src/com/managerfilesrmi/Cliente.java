@@ -30,36 +30,61 @@ public class Cliente {
 	                        System.out.println("Digite o diretório que será lido\n"
 	                        		+ "(. para o diretório raiz)");
 	                        String lerDiretorio = scanner.next();
-	                        System.out.println(Arrays.toString(fsinterface.ls(lerDiretorio)));
+	                        for (String s : fsinterface.ls(lerDiretorio)) {
+	                        	System.out.println(s);
+	                        };
 	                        break;
 	                    case 2:
 	                        System.out.println("Digite o caminho para criação de um novo diretório");
 	                        String criacaoD = scanner.next();
-	                        fsinterface.mkdir(criacaoD);
+	                        int folder = fsinterface.mkdir(criacaoD);
+	                        if (folder == 0) {
+	                        	System.out.println(" ----- PASTA CRIADA COM SUCESSO! -----");
+	                        } else {
+	                        	System.out.println("----- OCORREU UMA FALHA PARA CRIAR A PASTA! -----");
+	                        }
 	                        break;
 	                    case 3:
-	                        System.out.println("Digite o caminho para criação de um novo arquivo");
+	                        System.out.println("Digite o caminho e o nome do arquivo para ser criado (separado por \\\\)");
 	                        String criacaoA = scanner.next();
-	                        fsinterface.create(criacaoA);
+	                        int newfile = fsinterface.create(criacaoA);
+	                        if ( newfile == 0) {
+	                        	System.out.println(" ----- ARQUIVO CRIADO COM SUCESSO! -----");
+	                        } else {
+	                        	System.out.println(" ----- OCORREU UMA FAHA PARA CRIAR O ARQUIVO! -----");
+	                        }
+	                    
 	                        break;
 	                    case 4:
-	                        System.out.println("Digite o caminho para deletar um arquivo");
+	                        System.out.println("Digite o caminho e o nome para deletar um arquivo (separado por \\\\)");
 	                        String deletar = scanner.next();
-	                        fsinterface.unlink(deletar);
+	                        int fileDel = fsinterface.unlink(deletar); 
+	                        if (fileDel == 0) {
+	                        	System.out.println(" ----- ARQUIVO DELETADO COM SUCESSO! -----");
+	                        } else {
+	                        	System.out.println(" ----- OCORREU UMA FAHA PARA DELETAR O ARQUIVO! -----");
+	                        }
 	                        break;
 	                    case 5:
-	                        System.out.println("Digite o caminho do arquivo que será editado");
+	                        System.out.println("Digite o caminho e o nome do arquivo que será editado (separado por \\\\)");
 	                        String editar = scanner.next();
 	                        System.out.println("Digite o texto do arquivo");
 	                        Scanner scanner2 = new Scanner(System.in);
 	                        String information = scanner2.nextLine();
-	                        fsinterface.write(information.getBytes(),editar);
+	                        int fileEdit = fsinterface.write(information.getBytes(),editar);
+	                        if ( fileEdit == 0) {
+	                        	System.out.println(" ----- ARQUIVO EDITADO COM SUCESSO! -----");
+	                        } else {
+	                        	System.out.println(" ----- OCORREU UMA FAHA PARA EDITAR O ARQUIVO! -----");
+	                        }
 	                        break;                                      
 	                    case 6:
-	                        System.out.println("Digite o caminho do arquivo que deve ser lido");
+	                        System.out.println("Digite o caminho e o nome do arquivo que deve ser lido (separados por \\\\)");
 	                        String lerArquivo = scanner.next();
 	                        String textoLido = new String(fsinterface.read(lerArquivo));
+	                        System.out.println(" ----- TEXTO DO ARQUIVO ----- ");
 	                        System.out.println(textoLido);
+	                        System.out.println(" ----- FIM DO TEXTO DO ARQUIVO ----- ");
 	                        break;
 	                    case 9:
 	                    	System.out.println("Encerrando o sistema...");
@@ -73,8 +98,7 @@ public class Cliente {
 				e.printStackTrace();
 			}
 		} catch (Exception e) {
-			System.out.println ("Falha na conexão");
-			e.printStackTrace();
+			System.out.println ("Falha na conexão! Verifique se o endereço digitado esta correto!");
 		}
 	}
 }

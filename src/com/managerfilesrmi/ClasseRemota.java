@@ -27,19 +27,26 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 			arquivo = new File("arquivos\\" + path);
 		}
 		File[] directoryFiles = arquivo.listFiles();
+		if (directoryFiles == null) {
+			return new String[] { "Essa pasta não existe!" };
+		}
 		if (directoryFiles.length > 0) {
-			String[] arquivosEncontrados = new String[directoryFiles.length];
-			int i = 0; 
+			String[] arquivosEncontrados = new String[directoryFiles.length + 2];
+			int i = 1;
+			arquivosEncontrados[0] = "----- LISTA DE ARQUIVOS: -----";
 			for (File f : directoryFiles) {
-				System.out.println(f.getName());
-				arquivosEncontrados[i] = f.getName();
+				if (f.isDirectory() == true) {
+					arquivosEncontrados[i] = "PASTA: ";
+				} else {
+					arquivosEncontrados[i] = "ARQUIVO: ";
+				}
+				arquivosEncontrados[i] += f.getName();
 				i++;
 			}
-			System.out.println("Arquivos dentro do diretório selecionado:");
+			arquivosEncontrados[i] = "----- FIM DA LISTA DE ARQUIVOS NO DIRETÓRIO -----";
 			return arquivosEncontrados;
 		} else {
-			System.out.println("Nenhum arquivo encontrado");
-			return null;
+			return new String[] { "A pasta esta vazia!" };
 		}
 	}
 
@@ -48,10 +55,8 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 		File arquivo = new File("arquivos\\" + path);
 		if (!arquivo.exists()) {
 			if (arquivo.mkdir()) {
-				System.out.println("Directory is created!");
 				return 0;
 			} else {
-				System.out.println("Failed to create directory!");
 				return 1;
 			}
 		}
@@ -64,10 +69,9 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
-				System.out.println("New file created!");
 				return 0;
 			} catch (IOException e) {
-				e.printStackTrace();
+				return 1;
 			}
 		}
 		return 1;
@@ -78,12 +82,10 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 		File file = new File("arquivos\\" + path);
 		if (file.exists()) {
 			file.delete();
-			System.out.println("File/Directory was deleted!");
+			return 0;
 		}  else {
-			System.out.println("Failed to delete file/directory!");
+			return 1;
 		}
-
-		return 0;
 	}
 
 	@Override
@@ -91,15 +93,11 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 		if (data != null && path != null) {
 			try {
 				Files.write(Paths.get("arquivos\\" + path), data);
-				System.out.println("File was updated!");
 				return 0;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return 1;
 			}
 			
-		} else {
-			System.out.println("Failed to update file!");
 		}
 		return 1;
 	}
@@ -110,9 +108,8 @@ public class ClasseRemota extends UnicastRemoteObject implements FSInterface {
 		try {
 			return Files.readAllBytes(Paths.get("arquivos\\" + path));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			content = " ----- O ARQUIVO NÃO FOI ENCONTRADO ----- ";
+			return content.getBytes();
 		}
 	}
 	
